@@ -924,6 +924,15 @@ public final class DataModel {
     }
 
     /**
+     * Re-runs the alarm-silencing settings check, e.g. after a permission result may have
+     * changed the answer. Listeners are only notified when the outcome actually changes.
+     */
+    public void updateSilentState() {
+        enforceMainLooper();
+        mSilentSettingsModel.updateSilentState();
+    }
+
+    /**
      * @return the id used to discriminate relevant AlarmManager callbacks from defunct ones
      */
     public int getGlobalIntentId() {

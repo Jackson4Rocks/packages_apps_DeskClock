@@ -165,7 +165,7 @@
             app:backgroundTint="?attr/colorTertiaryContainer"
             app:icon="@drawable/ic_backspace"
             app:iconTint="?attr/colorOnTertiaryContainer"
-            app:iconSize="40dp"
+            app:iconSize="48dp"
             app:iconGravity="textStart"
             app:layout_constraintStart_toEndOf="@id/column_1_right"
             app:layout_constraintEnd_toEndOf="parent"

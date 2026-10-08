@@ -51,6 +51,7 @@ import com.android.deskclock.actionbarmenu.SearchMenuItemController;
 import com.android.deskclock.actionbarmenu.SettingsMenuItemController;
 import com.android.deskclock.data.City;
 import com.android.deskclock.data.DataModel;
+import com.android.deskclock.widget.ToolbarBaseActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -165,6 +166,7 @@ public final class CitySelectionActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mOptionsMenuManager.onCreateOptionsMenu(menu);
+        ToolbarBaseActivity.tintMenuIcons(this, menu);
         return true;
     }
 

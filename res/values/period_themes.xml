@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <!--
+        Time of day overlays. They are applied on top of Theme.DeskClock with force=true so only
+        the listed attributes change. The overlays tint the dark surfaces with the light outside;
+        every accent (primary, secondary, the glass) intentionally comes from the system's own
+        color selection instead, so the bar, the buttons and the switches always stay on one
+        theme together with the rest of the OS.
+        The names intentionally contain no dots: a dotted name would silently chain a parent
+        style, and these are meant to be bare overlays rather than theme subclasses.
+    -->
+
+    <style name="TimeOfDay_Day">
+        <item name="colorSurface">@color/period_day_surface</item>
+        <item name="colorSurfaceVariant">@color/period_day_surface_variant</item>
+    </style>
+
+    <style name="TimeOfDay_Afternoon">
+        <item name="colorSurface">@color/period_afternoon_surface</item>
+        <item name="colorSurfaceVariant">@color/period_afternoon_surface_variant</item>
+    </style>
+
+    <style name="TimeOfDay_Evening">
+        <item name="colorSurface">@color/period_evening_surface</item>
+        <item name="colorSurfaceVariant">@color/period_evening_surface_variant</item>
+    </style>
+
+    <style name="TimeOfDay_Night">
+        <item name="colorSurface">@color/period_night_surface</item>
+        <item name="colorSurfaceVariant">@color/period_night_surface_variant</item>
+    </style>
+</resources>

@@ -60,4 +60,21 @@
     <attr name="appWidgetConfigBorder" format="color" />
     <attr name="appWidgetThemeTransparent" format="reference" />
     <attr name="appWidgetThemeSolid" format="reference" />
+
+    <!--
+        Tint painted over the blurred backdrop of the floating liquid glass bar. The value is a
+        semi transparent color and is overridden by the time of day theme overlays.
+    -->
+    <attr name="deskClockGlassTint" format="color" />
+
+    <!-- Solid fill for the About description boxes: pure black or white per mode. -->
+    <attr name="aboutCardColor" format="color" />
+
+    <!-- Big clock readouts: follows the theme normally, pure black in Light mode. -->
+    <attr name="clockTextColor" format="color" />
+
+    <!-- Timer pad fill: translucent glass in the dark theme, solid container in Light. -->
+    <attr name="timerPadFill" format="color" />
+    <!-- Side fab fill: translucent white glass in the dark theme, solid in Light. -->
+    <attr name="fabSideFill" format="color" />
 </resources>

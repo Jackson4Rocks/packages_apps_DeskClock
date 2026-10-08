@@ -28,14 +28,12 @@
         android:background="?colorPrimary"
         android:fitsSystemWindows="true"
         android:outlineAmbientShadowColor="@android:color/transparent"
-        android:outlineSpotShadowColor="@android:color/transparent"
-        android:theme="@style/Theme.Toolbar.Settings">
+        android:outlineSpotShadowColor="@android:color/transparent">
 
         <Toolbar
             android:id="@+id/action_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="?android:attr/actionBarTheme"
             android:transitionName="shared_element_view" />
 
     </com.google.android.material.appbar.AppBarLayout>

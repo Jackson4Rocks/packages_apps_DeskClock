@@ -19,6 +19,7 @@ package com.android.deskclock.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import androidx.preference.TwoStatePreference;
 
 import com.android.deskclock.R;
 import com.android.deskclock.ScreensaverActivity;
+import com.android.deskclock.ThemeUtils;
 import com.android.deskclock.Utils;
 import com.android.deskclock.data.DataModel;
 import com.android.deskclock.data.TimeZones;
@@ -68,6 +70,8 @@ public final class SettingsActivity extends ToolbarBaseActivity {
     public static final String KEY_WEEK_START = "week_start";
     public static final String KEY_FLIP_ACTION = "flip_action";
     public static final String KEY_SHAKE_ACTION = "shake_action";
+    public static final String KEY_ABOUT = "about_maxxos_clock";
+    public static final String KEY_THEME_MODE = "theme_mode";
 
     public static final String DEFAULT_VOLUME_BEHAVIOR = "0";
     public static final String VOLUME_BEHAVIOR_SNOOZE = "1";
@@ -102,6 +106,39 @@ public final class SettingsActivity extends ToolbarBaseActivity {
                     .getSystemService(VIBRATOR_SERVICE)).hasVibrator();
             timerVibrate.setVisible(hasVibrator);
             loadTimeZoneList();
+            tintRowIcons();
+        }
+
+        /**
+         * Paints the row glyphs with the theme so they stay visible in both dark and Light
+         * mode. The vectors are shared with toolbar usages, so each one is tinted on a copy.
+         * The About row keeps its full-color launcher icon and is left alone.
+         */
+        private void tintRowIcons() {
+            final int tint = ThemeUtils.resolveColor(
+                    requireContext(), R.attr.colorOnSurfaceVariant);
+            final String[] keys = {
+                    KEY_CLOCK_STYLE, "display_clock_seconds", "automatic_home_clock",
+                    "home_time_zone", KEY_DATE_TIME, KEY_SCREENSAVER_PREVIEW,
+                    KEY_SCREENSAVER_SETTINGS, KEY_SCREENSAVER_DAYDREAM_SETTINGS,
+                    KEY_AUTO_SILENCE, KEY_ALARM_SNOOZE, "volume_setting",
+                    KEY_ALARM_CRESCENDO, KEY_VOLUME_BUTTONS, KEY_FLIP_ACTION,
+                    KEY_SHAKE_ACTION, KEY_WEEK_START, KEY_TIMER_RINGTONE,
+                    KEY_TIMER_CRESCENDO, KEY_TIMER_VIBRATE, KEY_THEME_MODE,
+            };
+            for (String key : keys) {
+                final Preference pref = findPreference(key);
+                if (pref == null) {
+                    continue;
+                }
+                Drawable icon = pref.getIcon();
+                if (icon == null) {
+                    continue;
+                }
+                icon = icon.mutate();
+                icon.setTint(tint);
+                pref.setIcon(icon);
+            }
         }
 
         @Override
@@ -163,6 +200,13 @@ public final class SettingsActivity extends ToolbarBaseActivity {
                 case KEY_TIMER_RINGTONE:
                     pref.setSummary(DataModel.getDataModel().getTimerRingtoneTitle());
                     break;
+                case KEY_THEME_MODE:
+                    final ListPreference themePreference = (ListPreference) pref;
+                    final int themeIndex = themePreference.findIndexOfValue((String) newValue);
+                    themePreference.setSummary(themePreference.getEntries()[themeIndex]);
+                    // The theme is picked before anything inflates, so rebuild right away.
+                    getActivity().recreate();
+                    break;
             }
             // Set result so DeskClock knows to refresh itself
             getActivity().setResult(RESULT_OK);
@@ -201,6 +245,9 @@ public final class SettingsActivity extends ToolbarBaseActivity {
                     return true;
                 case KEY_TIMER_RINGTONE:
                     startActivity(RingtonePickerActivity.createTimerRingtonePickerIntent(context));
+                    return true;
+                case KEY_ABOUT:
+                    startActivity(new Intent(context, AboutActivity.class));
                     return true;
             }
 
@@ -255,6 +302,10 @@ public final class SettingsActivity extends ToolbarBaseActivity {
             clockStylePref.setSummary(clockStylePref.getEntry());
             clockStylePref.setOnPreferenceChangeListener(this);
 
+            final ListPreference themeModePref = findPreference(KEY_THEME_MODE);
+            themeModePref.setSummary(themeModePref.getEntry());
+            themeModePref.setOnPreferenceChangeListener(this);
+
             final ListPreference volumeButtonsPref = findPreference(KEY_VOLUME_BUTTONS);
             volumeButtonsPref.setSummary(volumeButtonsPref.getEntry());
             volumeButtonsPref.setOnPreferenceChangeListener(this);
@@ -277,6 +328,9 @@ public final class SettingsActivity extends ToolbarBaseActivity {
 
             final Preference dateAndTimeSetting = findPreference(KEY_DATE_TIME);
             dateAndTimeSetting.setOnPreferenceClickListener(this);
+
+            final Preference aboutPref = findPreference(KEY_ABOUT);
+            aboutPref.setOnPreferenceClickListener(this);
 
             final Preference screensaverSettings = findPreference(KEY_SCREENSAVER_SETTINGS);
             screensaverSettings.setOnPreferenceClickListener(this);

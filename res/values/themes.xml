@@ -33,6 +33,47 @@
         <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
         <item name="colorPrimaryDark">?android:attr/colorBackground</item>
 
+        <item name="deskClockGlassTint">?attr/colorSurfaceContainer</item>
+        <item name="aboutCardColor">#FF000000</item>
+        <item name="clockTextColor">?attr/colorOnSurface</item>
+        <item name="timerPadFill">#24FFFFFF</item>
+        <item name="fabSideFill">#30FFFFFF</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="snackbarStyle">@style/SnackBarStyle</item>
+        <item name="snackbarButtonStyle">@style/SnackBarButtonStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackBarTextStyle</item>
+        <item name="actionBarSize">64dp</item>
+    </style>
+
+    <!--
+        The same app in light surfaces. Every color comes from the theme (never hardcoded),
+        so flipping the Light mode toggle re-skins the whole app, and the system's own
+        color selection drives the accents here exactly as it does in the dark theme.
+    -->
+    <style name="Theme.DeskClock.Light" parent="Theme.Material3Expressive.DynamicColors.Light.NoActionBar">
+        <item name="android:colorBackgroundFloating">?attr/colorBackgroundFloating</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceVariant</item>
+        <item name="popupMenuBackground">@drawable/popup_background</item>
+        <item name="floatingActionButtonStyle">@style/Widget.DeskClock.FloatingActionButton</item>
+
+        <item name="android:timePickerStyle">@style/Widget.TimePicker</item>
+        <item name="android:windowBackground">?attr/colorSurface</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:colorForeground">?attr/colorOnSurface</item>
+        <item name="colorBackgroundFloating">?attr/colorSurface</item>
+        <item name="colorControlActivated">?attr/colorPrimary</item>
+        <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+        <item name="colorPrimaryDark">?android:attr/colorBackground</item>
+
+        <!-- Light glass needs body to read over bright content: mostly frosted white. -->
+        <item name="deskClockGlassTint">#A6FFFFFF</item>
+        <item name="aboutCardColor">#FFFFFFFF</item>
+        <item name="clockTextColor">#FF000000</item>
+        <item name="timerPadFill">?attr/colorSurfaceContainerHighest</item>
+        <item name="fabSideFill">?attr/colorSecondaryContainer</item>
+
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="snackbarStyle">@style/SnackBarStyle</item>
         <item name="snackbarButtonStyle">@style/SnackBarButtonStyle</item>

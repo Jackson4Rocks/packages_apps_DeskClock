@@ -19,13 +19,19 @@ package com.android.deskclock.alarms;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.android.deskclock.R;
 
 import java.util.Calendar;
 
@@ -60,6 +66,29 @@ public class TimePickerDialogFragment extends DialogFragment {
 
     public static void show(Fragment fragment) {
         show(fragment, -1 /* hour */, -1 /* minute */);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Float the clock on liquid glass: a translucent rounded shell with the app blurred
+        // behind it, instead of the flat solid dialog.
+        final Dialog dialog = getDialog();
+        if (dialog == null) {
+            return;
+        }
+        final Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setBackgroundDrawable(
+                ContextCompat.getDrawable(requireContext(), R.drawable.dialog_glass_background));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            final WindowManager.LayoutParams params = window.getAttributes();
+            params.setBlurBehindRadius(120);
+            window.setAttributes(params);
+        }
     }
 
     public static void show(Fragment parentFragment, int hourOfDay, int minute) {

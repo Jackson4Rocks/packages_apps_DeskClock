@@ -154,6 +154,23 @@ public class AlarmActivity extends BaseActivity
 
     private int mInitialPointerIndex = MotionEvent.INVALID_POINTER_ID;
 
+    /**
+     * A ringing alarm owns the screen, so it keeps the palette it was created with rather than
+     * being rebuilt underneath the user while it is up.
+     */
+    @Override
+    protected boolean shouldRecreateOnPeriodChange() {
+        return false;
+    }
+
+    /**
+     * A ringing alarm owns the screen, so it always stays dark no matter the toggle.
+     */
+    @Override
+    protected boolean useLightTheme() {
+        return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

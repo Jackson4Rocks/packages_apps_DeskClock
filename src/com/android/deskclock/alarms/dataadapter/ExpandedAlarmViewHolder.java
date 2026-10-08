@@ -22,7 +22,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Vibrator;
@@ -194,7 +193,8 @@ public final class ExpandedAlarmViewHolder extends AlarmItemViewHolder {
                         android.R.attr.windowBackground));
             } else {
                 dayButton.setChecked(false);
-                dayButton.setTextColor(Color.WHITE);
+                dayButton.setTextColor(ThemeUtils.resolveColor(context,
+                        android.R.attr.textColorPrimary));
             }
         }
     }

@@ -1054,4 +1054,41 @@
     -->
     <string name="alarm_is_snoozed"><xliff:g id="alarm_time" example="14:20">%s</xliff:g> alarm snoozed for 10 minutes</string>
 
+    <!-- About -->
+    <string name="about">About</string>
+    <string name="about_title">MaxxOS Clock</string>
+    <string name="about_tagline">Alarms, clock, timer and stopwatch for MaxxOS</string>
+    <string name="about_summary">Version, app id, credits and source code</string>
+    <string name="about_application">Application</string>
+    <string name="about_version_label">Version</string>
+    <string name="about_version_placeholder">1.0</string>
+    <string name="about_app_id_label">App id</string>
+    <string name="about_app_id_placeholder">com.android.deskclock</string>
+    <string name="about_os_label">OS</string>
+    <string name="about_os_value">MaxxOS</string>
+    <string name="about_open_source">Open source and credits</string>
+    <string name="about_open_source_body">MaxxOS Clock is free and open source software. It is built on the Android Open Source Project DeskClock and LineageOS, and uses Material 3 by Google. Licensed under the Apache License, Version 2.0.</string>
+    <string name="about_source">Source code</string>
+    <string name="about_source_title">GitHub repository</string>
+    <string name="about_source_summary">github.com/MaxxOS-AOSP/packages_apps_DeskClock</string>
+    <string name="about_open_link_failed">Couldn\'t open the link: no browser available</string>
+    <string name="about_copyright">Copyright (C) 2026 MaxxOS. All rights reserved.</string>
+    <string name="display_settings">Display</string>
+    <string name="theme_mode">Theme</string>
+    <string name="theme_mode_summary">Follow the system, or force dark or light</string>
+
+    <!-- Entries listed in ListPreference for theme. -->
+    <string-array name="theme_setting_entries">
+        <item>System default</item>
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+
+    <!-- Values for ListPreference for theme. -->
+    <string-array name="theme_setting_values" translatable="false">
+        <item>system</item>
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+
 </resources>

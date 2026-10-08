@@ -32,4 +32,26 @@
 
     <color name="widget_label_color">@color/white</color>
     <color name="widget_label_color_dark">@color/black</color>
+
+    <!--
+        Time of day surfaces. The base theme stays dark all day long; only the surface tints
+        follow the light outside. Accents come from the system's own color selection instead,
+        so every section of the app stays on one theme with the rest of the OS.
+    -->
+
+    <!-- Morning and early daylight: cool graphite. -->
+    <color name="period_day_surface">#101821</color>
+    <color name="period_day_surface_variant">#1A2632</color>
+
+    <!-- Afternoon: neutral charcoal. -->
+    <color name="period_afternoon_surface">#141518</color>
+    <color name="period_afternoon_surface_variant">#231F27</color>
+
+    <!-- Evening: deep slate. -->
+    <color name="period_evening_surface">#14141B</color>
+    <color name="period_evening_surface_variant">#222230</color>
+
+    <!-- Night: indigo black. -->
+    <color name="period_night_surface">#0B0E15</color>
+    <color name="period_night_surface_variant">#141926</color>
 </resources>

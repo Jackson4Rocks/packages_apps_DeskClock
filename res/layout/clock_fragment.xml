@@ -22,6 +22,7 @@
     android:layout_height="match_parent"
     android:clickable="false"
     android:clipToPadding="false"
-    android:paddingBottom="@dimen/fab_height"
+    android:paddingBottom="@dimen/tab_list_bottom_padding"
     android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="?attr/colorOnSurfaceVariant"
     android:scrollbars="vertical" />

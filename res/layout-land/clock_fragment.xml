@@ -59,6 +59,7 @@
         android:clipToPadding="false"
         android:paddingBottom="@dimen/tab_content_bottom_padding"
         android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="?attr/colorOnSurfaceVariant"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

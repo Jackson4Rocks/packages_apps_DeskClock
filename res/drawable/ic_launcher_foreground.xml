@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2022 The LineageOS Project
+     SPDX-FileCopyrightText: 2026 The MaxxOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-  <group>
-    <clip-path
-        android:pathData="M0,0h108v108h-108z"/>
-    <path
-        android:pathData="M54,79L54,54"
-        android:strokeWidth="2"
-        android:fillColor="#00000000"
-        android:strokeColor="#FFD250"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="M54,54m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
-        android:fillColor="#F09F38"/>
-    <path
-        android:pathData="M28.54,28.54m-72,0a72,72 0,1 1,144 0a72,72 0,1 1,-144 0"
-        android:fillAlpha="0.6">
-      <aapt:attr name="android:fillColor">
-        <gradient
-            android:gradientRadius="72"
-            android:centerX="28.54"
-            android:centerY="28.54"
-            android:type="radial">
-          <item android:offset="0" android:color="#19FFFFFF"/>
-          <item android:offset="1" android:color="#00FFFFFF"/>
-        </gradient>
-      </aapt:attr>
-    </path>
-  </group>
+
+  <!-- Face -->
+  <path
+      android:pathData="M54,29a25,25 0,1,0 0,50a25,25 0,1,0 0,-50"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFFFFFF"
+      android:strokeWidth="5" />
+
+  <!-- Ten past ten, the way a clock is always photographed -->
+  <path
+      android:pathData="M54,54L42.7,47.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFFFFFF"
+      android:strokeLineCap="round"
+      android:strokeWidth="5" />
+  <path
+      android:pathData="M54,54L69.2,45.3"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFFFFFF"
+      android:strokeLineCap="round"
+      android:strokeWidth="5" />
+
+  <!-- Second hand, carrying the sunset accent of the palette -->
+  <path
+      android:pathData="M54,54L54,71"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFFF8D76"
+      android:strokeLineCap="round"
+      android:strokeWidth="3" />
 </vector>

@@ -30,6 +30,8 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,10 +42,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 
 import com.android.deskclock.actionbarmenu.OptionsMenuManager;
@@ -112,6 +116,9 @@ public class DeskClock extends BaseActivity
     /** The view that displays the current tab's title */
     private TextView mTitleView;
 
+    /** Whether Light mode was on when this activity was created (the theme is fixed then). */
+    private boolean mLightMode;
+
     /** The bottom navigation bar */
     private BottomNavigationView mBottomNavigation;
 
@@ -170,11 +177,24 @@ public class DeskClock extends BaseActivity
         mLeftButton = findViewById(R.id.left_button);
         mRightButton = findViewById(R.id.right_button);
 
-        mFab.setOnClickListener(view -> getSelectedDeskClockFragment().onFabClick(mFab));
-        mLeftButton.setOnClickListener(view ->
-                getSelectedDeskClockFragment().onLeftButtonClick(mLeftButton));
-        mRightButton.setOnClickListener(view ->
-                getSelectedDeskClockFragment().onRightButtonClick(mRightButton));
+        mFab.setOnClickListener(view -> {
+            final DeskClockFragment fragment = getSelectedDeskClockFragment();
+            if (fragment != null) {
+                fragment.onFabClick(mFab);
+            }
+        });
+        mLeftButton.setOnClickListener(view -> {
+            final DeskClockFragment fragment = getSelectedDeskClockFragment();
+            if (fragment != null) {
+                fragment.onLeftButtonClick(mLeftButton);
+            }
+        });
+        mRightButton.setOnClickListener(view -> {
+            final DeskClockFragment fragment = getSelectedDeskClockFragment();
+            if (fragment != null) {
+                fragment.onRightButtonClick(mRightButton);
+            }
+        });
 
         final long duration = UiDataModel.getUiDataModel().getShortAnimationDuration();
 
@@ -189,14 +209,20 @@ public class DeskClock extends BaseActivity
         hideFabAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                getSelectedDeskClockFragment().onUpdateFab(mFab);
+                final DeskClockFragment fragment = getSelectedDeskClockFragment();
+                if (fragment != null) {
+                    fragment.onUpdateFab(mFab);
+                }
             }
         });
 
         leftHideAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                getSelectedDeskClockFragment().onUpdateFabButtons(mLeftButton, mRightButton);
+                final DeskClockFragment fragment = getSelectedDeskClockFragment();
+                if (fragment != null) {
+                    fragment.onUpdateFabButtons(mLeftButton, mRightButton);
+                }
             }
         });
 
@@ -232,11 +258,15 @@ public class DeskClock extends BaseActivity
         // Mirror changes made to the selected tab into UiDataModel.
         mBottomNavigation = findViewById(R.id.bottom_view);
         mBottomNavigation.setOnItemSelectedListener(mNavigationListener);
+        // Tint the fab with the system accent right away; the theme (not the clock) owns the
+        // color now, so the add button always matches the bar, the switches and the system.
+        applySystemAccent();
 
         // Honor changes to the selected tab from outside entities.
         UiDataModel.getUiDataModel().addTabListener(mTabChangeWatcher);
 
         mTitleView = findViewById(R.id.title_view);
+        mLightMode = TimeOfDayTheme.isLightMode(this);
     }
 
     private final NavigationBarView.OnItemSelectedListener mNavigationListener
@@ -245,7 +275,7 @@ public class DeskClock extends BaseActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             UiDataModel.Tab selectedTab = null;
-            int itemId = item.getItemId();
+            final int itemId = item.getItemId();
             if (itemId == R.id.page_alarm) {
                 selectedTab = UiDataModel.Tab.ALARMS;
             } else if (itemId == R.id.page_clock) {
@@ -257,12 +287,17 @@ public class DeskClock extends BaseActivity
             }
 
             if (selectedTab != null) {
-                UiDataModel.Tab currentTab = UiDataModel.getUiDataModel().getSelectedTab();
-                DeskClockFragment currentFrag = mFragmentUtils.getDeskClockFragment(currentTab);
-                DeskClockFragment selectedFrag = mFragmentUtils.getDeskClockFragment(selectedTab);
+                final UiDataModel.Tab currentTab = UiDataModel.getUiDataModel().getSelectedTab();
+                final DeskClockFragment currentFrag =
+                        mFragmentUtils.getDeskClockFragment(currentTab);
+                final DeskClockFragment selectedFrag =
+                        mFragmentUtils.getDeskClockFragment(selectedTab);
+                if (currentFrag == null || selectedFrag == null) {
+                    return false;
+                }
 
-                int currentVisibility = currentFrag.getFabTargetVisibility();
-                int targetVisibility = selectedFrag.getFabTargetVisibility();
+                final int currentVisibility = currentFrag.getFabTargetVisibility();
+                final int targetVisibility = selectedFrag.getFabTargetVisibility();
                 if (currentVisibility != targetVisibility) {
                     if (targetVisibility == View.VISIBLE) {
                         mShowAnimation.start();
@@ -288,6 +323,12 @@ public class DeskClock extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        // The theme is fixed at creation; a mode flip in Settings needs a rebuild.
+        if (mLightMode != TimeOfDayTheme.isLightMode(this)) {
+            recreate();
+            return;
+        }
 
         final Intent intent = getIntent();
         if (intent != null) {
@@ -339,6 +380,14 @@ public class DeskClock extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mOptionsMenuManager.onCreateOptionsMenu(menu);
+        // The gear is a fixed white glyph; tint it with the theme so it survives Light mode.
+        final int tint = ThemeUtils.resolveColor(this, R.attr.colorOnSurface);
+        for (int i = 0; i < menu.size(); i++) {
+            final Drawable icon = menu.getItem(i).getIcon();
+            if (icon != null) {
+                icon.mutate().setTint(tint);
+            }
+        }
         return true;
     }
 
@@ -352,6 +401,23 @@ public class DeskClock extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mOptionsMenuManager.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Paints the fab (and the bar, if it ever drifts) with the system accent at glass alpha.
+     * The color itself comes from the system selection via the theme; only the translucency
+     * is ours, so the whole app stays on one theme.
+     */
+    private void applySystemAccent() {
+        final int accent = ThemeUtils.resolveColor(this, R.attr.colorPrimary);
+        if (mFab != null) {
+            // Tinted glass rather than a solid disc: the accent at reduced alpha so the sky
+            // shows through, exactly like the alarm cards. Solid in Light mode, where
+            // translucency only reveals layering artifacts.
+            final int alpha = TimeOfDayTheme.isLightMode(this) ? 0xFF : 0xB3;
+            mFab.setBackgroundTintList(
+                    ColorStateList.valueOf(ColorUtils.setAlphaComponent(accent, alpha)));
+        }
     }
 
     /**
@@ -371,13 +437,18 @@ public class DeskClock extends BaseActivity
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return getSelectedDeskClockFragment().onKeyDown(keyCode,event)
+        final DeskClockFragment fragment = getSelectedDeskClockFragment();
+        return (fragment != null && fragment.onKeyDown(keyCode, event))
                 || super.onKeyDown(keyCode, event);
     }
 
     @Override
     public void updateFab(@UpdateFabFlag int updateType) {
         final DeskClockFragment f = getSelectedDeskClockFragment();
+        if (f == null) {
+            // No section has been selected yet; there is nothing to update.
+            return;
+        }
         final int fabAnimationType = updateType & FAB_ANIMATION_MASK;
         if (fabAnimationType == FAB_SHRINK_AND_EXPAND) {
             mUpdateFabOnlyAnimation.start();
@@ -469,6 +540,9 @@ public class DeskClock extends BaseActivity
             } else {
                 essentialPermissionsDenied();
             }
+            // The silence check in onStart may have run before the user answered, caching a
+            // stale "notifications blocked" state. Re-evaluate now that the answer is in.
+            DataModel.getDataModel().updateSilentState();
         }
     }
 
@@ -556,7 +630,9 @@ public class DeskClock extends BaseActivity
      * @return a Snackbar that displays the message with the given id for 5 seconds
      */
     private Snackbar createSnackbar(@StringRes int messageId) {
-        return Snackbar.make(mSnackbarAnchor, messageId, 5000 /* duration */);
+        // Anchor above the floating glass bar so the message and its action stay reachable.
+        return Snackbar.make(mSnackbarAnchor, messageId, 5000 /* duration */)
+                .setAnchorView(mBottomNavigation);
     }
 
     /**

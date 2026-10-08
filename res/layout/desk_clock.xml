@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  Copyright (C) 2026 MaxxOS. All rights reserved.
+  MaxxOS UI redesign. Original AOSP notice below is retained.
+  -->
+<!--
   Copyright (C) 2016 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,71 +65,76 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- MaxxOS: secondary round buttons (lap / reset / add) float just above the nav row -->
+        <LinearLayout
             android:id="@+id/fab_container"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/maxxos_nav_margin_horizontal"
+            android:layout_marginBottom="@dimen/maxxos_fab_clearance"
             android:baselineAligned="false"
-            android:orientation="horizontal"
-            app:layout_dodgeInsetEdges="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/left_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_margin="@dimen/maxxos_side_button_margin"
                 android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/fab"
-                app:layout_constraintHorizontal_bias="0.6"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:fabCustomSize="@dimen/maxxos_side_button_size"
                 app:backgroundTint="?attr/colorSecondary"
                 app:tint="?attr/colorOnSecondary" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/fab_margin"
-                android:contentDescription="@null"
-                app:fabCustomSize="@dimen/fab_height"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:backgroundTint="?attr/colorPrimary"
-                app:tint="?attr/colorOnPrimary" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/right_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_margin="@dimen/maxxos_side_button_margin"
                 android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.4"
-                app:layout_constraintStart_toEndOf="@id/fab"
-                app:layout_constraintTop_toTopOf="parent"
+                app:fabCustomSize="@dimen/maxxos_side_button_size"
                 app:backgroundTint="?attr/colorSecondary"
                 app:tint="?attr/colorOnSecondary" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_view"
+    <!-- MaxxOS: bottom row = floating pill navigation + round main button beside it -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurfaceVariant"
-        app:menu="@menu/bottom_navigation_menu"
-        app:itemIconTint="@color/tab_tint_color"
-        app:itemTextColor="@color/tab_tint_color"
-        app:itemTextAppearanceActive="@style/navText"
-        app:itemTextAppearanceInactive="@style/navText"
-        app:labelVisibilityMode="labeled" />
+        android:layout_gravity="bottom"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/maxxos_nav_margin_horizontal"
+        android:paddingEnd="@dimen/maxxos_nav_margin_horizontal"
+        android:paddingTop="@dimen/maxxos_nav_margin_vertical"
+        android:paddingBottom="@dimen/maxxos_nav_margin_vertical">
+
+        <com.android.deskclock.widget.MaxxOSLiquidNavigationView
+            android:id="@+id/bottom_view"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/maxxos_nav_height"
+            android:layout_weight="1"
+            android:background="@drawable/maxxos_nav_pill"
+            android:elevation="@dimen/maxxos_nav_elevation"
+            app:menu="@menu/bottom_navigation_menu"
+            app:itemIconTint="@color/tab_tint_color"
+            app:itemTextColor="@color/tab_tint_color"
+            app:itemTextAppearanceActive="@style/navText"
+            app:itemTextAppearanceInactive="@style/navText"
+            app:itemActiveIndicatorStyle="@style/Widget.MaxxOS.BottomNav.ActiveIndicator"
+            app:labelVisibilityMode="selected" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/maxxos_fab_gap"
+            android:contentDescription="@null"
+            app:fabCustomSize="@dimen/maxxos_nav_height"
+            app:backgroundTint="?attr/colorPrimary"
+            app:tint="?attr/colorOnPrimary" />
+    </LinearLayout>
 </LinearLayout>

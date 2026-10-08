@@ -102,6 +102,13 @@ public class AnalogClock extends FrameLayout {
         mMinuteHand.getDrawable().mutate();
         addView(mMinuteHand);
 
+        if (TimeOfDayTheme.isLightMode(context)) {
+            // White hands vanish on the light sky; ink them like the digital clocks.
+            dial.getDrawable().setTint(0xFF1A1C1E);
+            mHourHand.getDrawable().setTint(0xFF1A1C1E);
+            mMinuteHand.getDrawable().setTint(0xFF1A1C1E);
+        }
+
         mSecondHand = new AppCompatImageView(context);
         mSecondHand.setImageResource(R.drawable.clock_analog_second);
         mSecondHand.getDrawable().mutate();

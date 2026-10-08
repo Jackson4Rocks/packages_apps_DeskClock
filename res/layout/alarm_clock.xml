@@ -27,8 +27,9 @@
         android:clipToPadding="false"
         android:descendantFocusability="beforeDescendants"
         android:fadingEdgeLength="0dp"
-        android:paddingBottom="@dimen/fab_height"
+        android:paddingBottom="@dimen/tab_list_bottom_padding"
         android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="?attr/colorOnSurfaceVariant"
         android:scrollbars="vertical"
         android:splitMotionEvents="false" />
 
@@ -40,9 +41,8 @@
         android:layout_gravity="center"
         android:contentDescription="@string/no_alarms"
         android:gravity="center_horizontal"
-        android:paddingBottom="@dimen/fab_height"
+        android:paddingBottom="@dimen/tab_list_bottom_padding"
         android:text="@string/no_alarms"
-        android:textColor="@color/no_alarms"
         android:visibility="gone" />
 
 </FrameLayout>

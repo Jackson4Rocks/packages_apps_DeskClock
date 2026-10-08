@@ -34,7 +34,7 @@
 
     <dimen name="circletimer_circle_size">6dp</dimen>
     <dimen name="stopwatch_circle_size">12dp</dimen>
-    <dimen name="max_timer_circle_size">240dp</dimen>
+    <dimen name="max_timer_circle_size">300dp</dimen>
     <dimen name="max_stopwatch_circle_size">320dp</dimen>
 
     <dimen name="alarm_lockscreen_alarm_horizontal_padding">16dp</dimen>
@@ -51,7 +51,7 @@
     <dimen name="day_button_font_size">16sp</dimen>
     <dimen name="alarm_info_font_size">36sp</dimen>
     <dimen name="no_alarm_font_size">16sp</dimen>
-    <dimen name="timer_setup_digit_font_size">72sp</dimen>
+    <dimen name="timer_setup_digit_font_size">84sp</dimen>
 
     <dimen name="alarm_picker_dialog_horizontal_margin">30dp</dimen>
     <dimen name="alarm_picker_dialog_vertical_margin">20dp</dimen>
@@ -110,9 +110,21 @@
     <!-- Floating action button container height -->
     <dimen name="fab_height">88dp</dimen>
 
-    <dimen name="fab_container_height">120dp</dimen>
+    <dimen name="fab_container_height">200dp</dimen>
     <dimen name="fab_container_width">0dp</dimen>
     <dimen name="tab_content_bottom_padding">@dimen/fab_container_height</dimen>
+
+    <!-- Floating "liquid glass" bottom navigation bar. -->
+    <dimen name="glass_bar_height">64dp</dimen>
+    <dimen name="glass_bar_margin">16dp</dimen>
+    <dimen name="glass_bar_corner_radius">32dp</dimen>
+    <!-- Total space reserved at the bottom of the screen: margin + bar height. -->
+    <dimen name="glass_bar_clearance">80dp</dimen>
+    <dimen name="glass_bar_elevation">14dp</dimen>
+    <dimen name="glass_bar_text_size">11sp</dimen>
+    <dimen name="glass_bar_icon_size">24dp</dimen>
+    <!-- Bottom padding of tab lists: the space occupied by the fab plus the glass bar. -->
+    <dimen name="tab_list_bottom_padding">168dp</dimen>
 
     <dimen name="gutter_horizontal_padding">24.0dip</dimen>
     <dimen name="gutter_horizontal_padding_extreme_thin">4.0dip</dimen>

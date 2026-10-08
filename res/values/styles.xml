@@ -19,25 +19,25 @@
 
     <style name="no_alarms">
         <item name="android:textSize">@dimen/no_alarm_font_size</item>
-        <item name="android:textColor">@color/white_63p</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="display_time">
         <item name="android:textSize">56sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/clockTextColor</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:fontFeatureSettings">tnum</item>
     </style>
 
     <style name="world_clock_time">
         <item name="android:textSize">48sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/clockTextColor</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="body">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/clockTextColor</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
@@ -52,7 +52,7 @@
     </style>
 
     <style name="PrimaryLabelTextParentAppearance">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">@dimen/label_text_size</item>
     </style>
 
@@ -73,6 +73,14 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- MaxxOS: pill-shaped selected-tab indicator for the floating nav -->
+    <style name="Widget.MaxxOS.BottomNav.ActiveIndicator"
+        parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+    </style>
+
     <style name="Widget.ActionBar" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@null</item>
 
@@ -91,14 +99,17 @@
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">44sp</item>
         <item name="android:layout_margin">2.0dip</item>
         <item name="android:padding">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
-        <item name="autoSizeMaxTextSize">36sp</item>
+        <item name="autoSizeMaxTextSize">44sp</item>
         <item name="autoSizeTextType">uniform</item>
-        <item name="backgroundTint">?attr/colorSurfaceVariant</item>
+        <!-- Flat liquid glass: a translucent pane with a hairline rim, no solid bubble. -->
+        <item name="backgroundTint">?attr/timerPadFill</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
     <style name="Widget.Button.TimerSetupDigit.CircleOverlay">
@@ -127,7 +138,7 @@
     </style>
 
     <style name="MaterialCardViewStyle">
-        <item name="android:layout_marginTop">8.0dip</item>
+        <item name="android:layout_marginTop">12.0dip</item>
         <item name="android:layout_marginStart">16.0dip</item>
         <item name="android:layout_marginEnd">16.0dip</item>
         <item name="elevation">0.0dip</item>
@@ -160,7 +171,8 @@
     </style>
 
     <style name="TextAppearance.Title" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">22.0sp</item>
+        <item name="android:textSize">30.0sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TimerSetupTime">

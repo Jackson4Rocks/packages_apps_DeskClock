@@ -17,23 +17,32 @@
 package com.android.deskclock;
 
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 /**
- * Base activity class that changes the app window's color based on the current hour.
+ * Base activity class. The theme (dark or Light) is picked before anything inflates, and
+ * the window background is the theme surface, so the whole app stays on one theme with
+ * the system instead of drifting with the clock. Time-of-day theming is parked for now;
+ * its implementation is kept under SAMPLES/timing_backup for later.
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    /** Draws the app window's color. */
-    private ColorDrawable mBackground;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (useLightTheme()) {
+            // Must precede everything: the theme decides every color inflated afterwards.
+            setTheme(R.style.Theme_DeskClock_Light);
+        }
         super.onCreate(savedInstanceState);
+
+        // Flat theme surface behind everything; the floating glass blurs the content.
+        getWindow().setBackgroundDrawable(new ColorDrawable(
+                ThemeUtils.resolveColor(this, android.R.attr.windowBackground)));
 
         // Allow the content to layout behind the status and navigation bars.
         getWindow().getDecorView().setSystemUiVisibility(
@@ -41,38 +50,33 @@ public abstract class BaseActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-        final @ColorInt int color = ThemeUtils.resolveColor(this, android.R.attr.windowBackground);
-        adjustAppColor(color);
-    }
+        // Status and navigation glyphs follow the theme: dark on light surfaces.
+        final WindowInsetsControllerCompat insets = new WindowInsetsControllerCompat(
+                getWindow(), getWindow().getDecorView());
+        final boolean light = useLightTheme();
+        insets.setAppearanceLightStatusBars(light);
+        insets.setAppearanceLightNavigationBars(light);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // Ensure the app window color is up-to-date.
-        final @ColorInt int color = ThemeUtils.resolveColor(this, android.R.attr.windowBackground);
-        adjustAppColor(color);
+        // Never let the system paint its own contrast scrim behind the icons; the glyph
+        // colors above already guarantee contrast in both themes.
+        if (Build.VERSION.SDK_INT >= 29) {
+            getWindow().setStatusBarContrastEnforced(false);
+        }
     }
 
     /**
-     * Adjusts the current app window color of this activity; animates the change if desired.
-     *
-     * @param color   the ARGB value to set as the current app window color
+     * @return whether this activity follows the Light mode toggle; alert screens that must
+     *         stay dark opt out
      */
-    protected void adjustAppColor(@ColorInt int color) {
-        // Create and install the drawable that defines the window color.
-        if (mBackground == null) {
-            mBackground = new ColorDrawable(color);
-            getWindow().setBackgroundDrawable(mBackground);
-        }
-
-        final @ColorInt int currentColor = mBackground.getColor();
-        if (currentColor != color) {
-            setAppColor(color);
-        }
+    protected boolean useLightTheme() {
+        return TimeOfDayTheme.isLightMode(this);
     }
 
-    private void setAppColor(@ColorInt int color) {
-        mBackground.setColor(color);
+    /**
+     * @return whether this activity may rebuild itself when the time of day rolls over; screens
+     *         that must not be interrupted while they are up opt out and keep their palette
+     */
+    protected boolean shouldRecreateOnPeriodChange() {
+        return true;
     }
 }

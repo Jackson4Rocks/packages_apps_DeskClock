@@ -10,6 +10,10 @@ android {
         applicationId "com.android.deskclock"
         minSdkVersion 27
         targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+        // Visible build stamp (About footer) so installed builds are identifiable.
+        buildConfigField "String", "BUILD_STAMP", "\"" + new Date().format('MMdd-HHmm') + "\""
     }
 
     buildTypes {

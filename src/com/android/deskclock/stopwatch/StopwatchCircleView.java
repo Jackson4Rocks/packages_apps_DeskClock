@@ -25,6 +25,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.core.graphics.ColorUtils;
+
 import com.android.deskclock.R;
 import com.android.deskclock.ThemeUtils;
 import com.android.deskclock.data.DataModel;
@@ -74,7 +76,12 @@ public final class StopwatchCircleView extends View {
         mDotRadius = mStrokeSize / 2;
 
         mCompletedColor = ThemeUtils.resolveColor(context, R.attr.colorPrimary);
-        mCircleColor = ThemeUtils.resolveColor(context, R.attr.colorSurfaceVariant);
+        // Flat liquid glass ring: bright translucent white in the dark theme, dark
+        // translucent ink in Light mode so it reads on the pale sky in both.
+        // The progress arc keeps the full accent color.
+        final boolean dark = ColorUtils.calculateLuminance(ThemeUtils.resolveColor(
+                context, android.R.attr.windowBackground)) < 0.5d;
+        mCircleColor = dark ? 0x30FFFFFF : 0x40000000;
         mMarkerColor = Color.WHITE;
 
         mPaint.setAntiAlias(true);
@@ -105,12 +112,30 @@ public final class StopwatchCircleView extends View {
 
         final List<Lap> laps = getLaps();
 
-        // If a reference lap does not exist or should not be drawn, draw a simple white circle.
+        // Without a reference lap there is nothing to race against, so sweep the ring
+        // once per minute instead: the accent arc below always shows something live.
         if (laps.isEmpty() || !DataModel.getDataModel().canAddMoreLaps()) {
-            // Draw a complete white circle; no red arc required.
+            final Stopwatch stopwatch = getStopwatch();
+            final long totalTime = stopwatch.getTotalTime();
             canvas.drawCircle(xCenter, yCenter, radius, mPaint);
+            if (totalTime > 0L) {
+                final float sweep = (totalTime % 60000L) / 60000f;
+                mArcRect.top = yCenter - radius;
+                mArcRect.bottom = yCenter + radius;
+                mArcRect.left = xCenter - radius;
+                mArcRect.right = xCenter + radius;
+                mPaint.setColor(mCompletedColor);
+                canvas.drawArc(mArcRect, 270, sweep * 360f, false, mPaint);
+                final double dotAngleRadians = Math.toRadians(270 + sweep * 360f);
+                canvas.drawCircle(xCenter + (float) (radius * Math.cos(dotAngleRadians)),
+                        yCenter + (float) (radius * Math.sin(dotAngleRadians)),
+                        mDotRadius, mFill);
+            }
 
-            // No need to continue animating the plain white circle.
+            // Keep sweeping while running; a stopped watch holds its last arc.
+            if (stopwatch.isRunning()) {
+                postInvalidateOnAnimation();
+            }
             return;
         }
 
